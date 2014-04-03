@@ -1,0 +1,34 @@
+{
+    "versionLabel": "0.3",
+    "uuid": "08ef49a3-9232-46a7-a476-88a92aec20e2",
+    "appKeys": {
+        "CminutePrecise": 0,
+        "Ctopbar": 3,
+        "Ccouleur": 1,
+        "Cbatterie": 2
+    },
+    "longName": "Text Watch FR",
+    "versionCode": 0,
+    "capabilities": [
+        "configurable"
+    ],
+    "shortName": "Text Watch FR",
+    "companyName": "Benji7790",
+    "watchapp": {
+        "watchface": true
+    },
+    "resources": {
+        "media": [
+            {
+                "type": "png",
+                "name": "IMAGE_MENU_ICON",
+                "file": "images/menu_icon.png"
+            },
+            {
+                "type": "raw",
+                "name": "DUMMY",
+                "file": "data/resource_map.json"
+            }
+        ]
+    }
+}
