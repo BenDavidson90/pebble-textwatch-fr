@@ -158,8 +158,8 @@ int textwatch_time(char* line1, char* line2, char* line3, char* line4, struct tm
   
   strcat(line1, HEURES[hours]); //on affiche l'heure (toujours en première ligne)
   
-  //si minuit on affiche pas heure
-  if (hours == 0)
+  //si minuit ou midi on affiche pas heure
+  if (hours == 0 && hours == 12)
   {
     strcat(line2, mina);
     strcat(line3, minb);

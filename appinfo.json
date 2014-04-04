@@ -20,14 +20,14 @@
     "resources": {
         "media": [
             {
-                "type": "png",
-                "name": "IMAGE_MENU_ICON",
-                "file": "images/menu_icon.png"
-            },
-            {
                 "type": "raw",
                 "name": "DUMMY",
                 "file": "data/resource_map.json"
+            },
+            {
+                "type": "png",
+                "name": "IMAGE_MENU_ICON",
+                "file": "images/menu_icon.png"
             }
         ]
     }
