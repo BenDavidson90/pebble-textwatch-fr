@@ -62,14 +62,16 @@ static bool busy_animating_in = false;
 static bool busy_animating_out = false;
 /*réglage sur 4 lignes */
 const int line1_y = 7; 
-const int line2_y = 46;
-const int line3_y = 80;
+int line2_y = 46;
+int line3_y = 80;
 const int line4_y = 116;
 /*réglage sur 3 lignes */
 const int line1_y3 = 18; 
 const int line2_y3 = 56;
 const int line3_y3 = 94;
 const int line4_y3 = 200;
+
+
 
 
 
@@ -154,7 +156,10 @@ void update_NBlayer(int nbLayer){
 
 
 void update_TextLayerPosition(int nbLineNew){
-		if(nbLineNew == 3){
+    	time_t test = time(NULL);
+        struct tm * t = localtime(&test);
+		
+        if(nbLineNew == 3){
 			layer_set_frame((Layer *) line1->layer[0],GRect(0, line1_y3, 144, 50));
 			layer_set_frame((Layer *) line2->layer[0],GRect(0, line2_y3, 144, 50));
 			layer_set_frame((Layer *) line3->layer[0],GRect(0, line3_y3, 144, 50));
@@ -166,6 +171,35 @@ void update_TextLayerPosition(int nbLineNew){
 		}
 		
 		else{
+            
+            //Change la taille du texte si 14, 40aine ou 50aine
+            if ((t->tm_hour != 0) && (t->tm_min == 14 || (t->tm_min >= 41 && t->tm_min <= 44) || (t->tm_min >= 46 && t->tm_min <= 49)))
+            {
+                    line3_y = 85;
+            }
+            else if ((t->tm_hour != 0) && ((t->tm_min >= 51 && t->tm_min <= 54) || (t->tm_min >= 56 && t->tm_min <= 59)))
+            {
+                    line3_y = 88;
+            }
+            else
+            {
+                    line3_y = 80;
+            }
+            
+            //Change la taille du texte si 14, 40aine ou 50aine
+            if ((t->tm_hour == 0 || t->tm_hour == 12) && (t->tm_min == 14 || (t->tm_min >= 41 && t->tm_min <= 44) || (t->tm_min >= 46 && t->tm_min <= 49)))
+            {
+                    line2_y = 46;
+            }
+            else if ((t->tm_hour == 0 || t->tm_hour == 12) && ((t->tm_min >= 51 && t->tm_min <= 54) || (t->tm_min >= 56 && t->tm_min <= 59)))
+            {
+                    line2_y = 50;
+            }
+            else
+            {
+                    line2_y = 46;
+            }
+            
 			layer_set_frame((Layer *) line1->layer[0],GRect(0, line1_y, 144, 50));
 			layer_set_frame((Layer *) line2->layer[0],GRect(0, line2_y, 144, 50));
 			layer_set_frame((Layer *) line3->layer[0],GRect(0, line3_y, 144, 50));
@@ -287,7 +321,8 @@ void handle_minute_tick(struct tm *tick_time, TimeUnits units_changed) {
 
 // Handle the start-up of the app
 void handle_init(void) {
-
+    time_t test = time(NULL);
+    struct tm * t = localtime(&test);
 	// Init the text layers used to show the time
 	line1 = malloc(sizeof(TextLine));
 	line2 = malloc(sizeof(TextLine));
@@ -323,18 +358,56 @@ void handle_init(void) {
 	line2->layer[0] = text_layer_create(GRect(0, line2_y, 144, 50));
 	text_layer_set_text_color(line2->layer[0], INTColor2);
 	text_layer_set_background_color(line2->layer[0], INTColorClear);
-	text_layer_set_font(line2->layer[0], fonts_get_system_font(FONT_KEY_BITHAM_42_LIGHT));
+    //Change la taille du texte si 14, 40aine ou 50aine
+	if ((t->tm_hour == 0 || t->tm_hour == 12) && (t->tm_min == 14 || (t->tm_min >= 41 && t->tm_min <= 44) || (t->tm_min >= 46 && t->tm_min <= 49)))
+    {
+        text_layer_set_font(line2->layer[0], fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_GOTHAM_LIGHT_32))) ;
+    }
+    else if ((t->tm_hour == 0 || t->tm_hour == 12) && ((t->tm_min >= 51 && t->tm_min <= 54) || (t->tm_min >= 56 && t->tm_min <= 59)))
+    {
+        text_layer_set_font(line2->layer[0], fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_GOTHAM_LIGHT_30))) ;
+    }
+    else
+    {
+        text_layer_set_font(line2->layer[0], fonts_get_system_font(FONT_KEY_BITHAM_42_LIGHT));
+    }
 	text_layer_set_text_alignment(line2->layer[0], GTextAlignmentLeft);
 
 	line2->layer[1] = text_layer_create(GRect(-144, line2_y, 144, 50));
 	text_layer_set_text_color(line2->layer[1], INTColor2);
 	text_layer_set_background_color(line2->layer[1], INTColorClear);
-	text_layer_set_font(line2->layer[1], fonts_get_system_font(FONT_KEY_BITHAM_42_LIGHT));
+    //Change la taille du texte si 14, 40aine ou 50aine
+	if ((t->tm_hour == 0 || t->tm_hour == 12) && (t->tm_min == 14 || (t->tm_min >= 41 && t->tm_min <= 44) || (t->tm_min >= 46 && t->tm_min <= 49)))
+    {
+        text_layer_set_font(line2->layer[1], fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_GOTHAM_LIGHT_32))) ;
+    }
+    else if ((t->tm_hour == 0 || t->tm_hour == 12) && ((t->tm_min >= 51 && t->tm_min <= 54) || (t->tm_min >= 56 && t->tm_min <= 59)))
+    {
+        text_layer_set_font(line2->layer[1], fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_GOTHAM_LIGHT_30))) ;
+    }
+    else
+    {
+        text_layer_set_font(line2->layer[1], fonts_get_system_font(FONT_KEY_BITHAM_42_LIGHT));
+    }
 	text_layer_set_text_alignment(line2->layer[1], GTextAlignmentLeft);
 
 	line3->layer[0] = text_layer_create(GRect(0, line3_y, 144, 50));
 	text_layer_set_text_color(line3->layer[0], INTColor2);
 	text_layer_set_background_color(line3->layer[0], INTColorClear);
+    //Change la taille du texte si 14, 40aine ou 50aine
+    if ((t->tm_hour != 0) && (t->tm_min == 14 || (t->tm_min >= 41 && t->tm_min <= 44) || (t->tm_min >= 46 && t->tm_min <= 49)))
+    {
+        text_layer_set_font(line3->layer[0], fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_GOTHAM_LIGHT_32))) ;
+    }
+    else if ((t->tm_hour != 0) && ((t->tm_min >= 51 && t->tm_min <= 54) || (t->tm_min >= 56 && t->tm_min <= 59)))
+    {
+        text_layer_set_font(line3->layer[0], fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_GOTHAM_LIGHT_30))) ;
+    }
+    else
+    {
+        text_layer_set_font(line3->layer[0], fonts_get_system_font(FONT_KEY_BITHAM_42_LIGHT));
+    }
+	text_layer_set_text_alignment(line3->layer[0], GTextAlignmentLeft);
 	text_layer_set_font(line3->layer[0], fonts_get_system_font(FONT_KEY_BITHAM_42_LIGHT));
 	text_layer_set_text_alignment(line3->layer[0], GTextAlignmentLeft);
 	
@@ -342,7 +415,20 @@ void handle_init(void) {
 	line3->layer[1] = text_layer_create(GRect(144, line3_y, 144, 50));
 	text_layer_set_text_color(line3->layer[1], INTColor2);
 	text_layer_set_background_color(line3->layer[1], INTColorClear);
-	text_layer_set_font(line3->layer[1], fonts_get_system_font(FONT_KEY_BITHAM_42_LIGHT));
+    //Change la taille du texte si 14, 40aine ou 50aine
+	if ((t->tm_hour != 0) && (t->tm_min == 14 || (t->tm_min >= 41 && t->tm_min <= 44) || (t->tm_min >= 46 && t->tm_min <= 49)))
+    {
+        text_layer_set_font(line3->layer[1], fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_GOTHAM_LIGHT_32))) ;
+    }
+    else if ((t->tm_hour != 0) && ((t->tm_min >= 51 && t->tm_min <= 54) || (t->tm_min >= 56 && t->tm_min <= 59)))
+    {
+        text_layer_set_font(line3->layer[1], fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_GOTHAM_LIGHT_30))) ;
+    }
+    else
+    {
+        text_layer_set_font(line3->layer[1], fonts_get_system_font(FONT_KEY_BITHAM_42_LIGHT));
+    }
+	text_layer_set_text_alignment(line3->layer[0], GTextAlignmentLeft);
 	text_layer_set_text_alignment(line3->layer[1], GTextAlignmentLeft);
 
 
