@@ -172,7 +172,7 @@ void update_TextLayerPosition(int nbLineNew){
 		
 		else{
             
-            //Change la taille du texte si 14, 40aine ou 50aine
+            //Change la position du texte si 14, 40aine ou 50aine
             if ((t->tm_hour != 0) && (t->tm_min == 14 || (t->tm_min >= 41 && t->tm_min <= 44) || (t->tm_min >= 46 && t->tm_min <= 49)))
             {
                     line3_y = 85;
@@ -186,7 +186,7 @@ void update_TextLayerPosition(int nbLineNew){
                     line3_y = 80;
             }
             
-            //Change la taille du texte si 14, 40aine ou 50aine
+            //Change la position du texte si 14, 40aine ou 50aine
             if ((t->tm_hour == 0 || t->tm_hour == 12) && (t->tm_min == 14 || (t->tm_min >= 41 && t->tm_min <= 44) || (t->tm_min >= 46 && t->tm_min <= 49)))
             {
                     line2_y = 46;
@@ -222,8 +222,49 @@ void update_watch(void) {
 	if(strcmp(new_time.topbar, cur_time.topbar) != 0) text_layer_set_text(topbar, new_time.topbar);
 	if(strcmp(new_time.minutePrecise, cur_time.minutePrecise) != 0) text_layer_set_text(minutePrecise, new_time.minutePrecise);
 	
+    //EXPERIMENTAL//
+    //Change la taille du texte si 14, 40aine ou 50aine
+	if ((t->tm_hour == 0 || t->tm_hour == 12) && (t->tm_min == 14 || (t->tm_min >= 41 && t->tm_min <= 44) || (t->tm_min >= 46 && t->tm_min <= 49)))
+    {
+        text_layer_set_font(line2->layer[0], fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_GOTHAM_LIGHT_32))) ;
+        text_layer_set_font(line2->layer[1], fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_GOTHAM_LIGHT_32))) ;
+    }
+    else if ((t->tm_hour == 0 || t->tm_hour == 12) && ((t->tm_min >= 51 && t->tm_min <= 54) || (t->tm_min >= 56 && t->tm_min <= 59)))
+    {
+        text_layer_set_font(line2->layer[0], fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_GOTHAM_LIGHT_30))) ;
+        text_layer_set_font(line2->layer[1], fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_GOTHAM_LIGHT_30))) ;
+    }
+    else
+    {
+        text_layer_set_font(line2->layer[0], fonts_get_system_font(FONT_KEY_BITHAM_42_LIGHT));
+        text_layer_set_font(line2->layer[1], fonts_get_system_font(FONT_KEY_BITHAM_42_LIGHT));
+    }
+    
+
+    //Change la taille du texte si 14, 40aine ou 50aine
+    if ((t->tm_hour != 0) && (t->tm_min == 14 || (t->tm_min >= 41 && t->tm_min <= 44) || (t->tm_min >= 46 && t->tm_min <= 49)))
+    {
+        text_layer_set_font(line3->layer[0], fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_GOTHAM_LIGHT_32))) ;
+        text_layer_set_font(line3->layer[1], fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_GOTHAM_LIGHT_32))) ;
+    }
+    else if ((t->tm_hour != 0) && ((t->tm_min >= 51 && t->tm_min <= 54) || (t->tm_min >= 56 && t->tm_min <= 59)))
+    {
+        text_layer_set_font(line3->layer[0], fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_GOTHAM_LIGHT_30))) ;
+        text_layer_set_font(line3->layer[1], fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_GOTHAM_LIGHT_30))) ;
+    }
+    else
+    {
+        text_layer_set_font(line3->layer[0], fonts_get_system_font(FONT_KEY_BITHAM_42_LIGHT));
+        text_layer_set_font(line3->layer[1], fonts_get_system_font(FONT_KEY_BITHAM_42_LIGHT));
+    }
+    
+    update_TextLayerPosition(nbLineNew);
+	update_NBlayer(nbLineNew);
+    //!EXPERIMENTAL//
+    
 	// Let's get the new text time
 	nbLineNew = textwatch_time(new_time.line1, new_time.line2, new_time.line3 ,new_time.line4, t);
+    /*
 	if(nbLineNew != nbLine)
 	{
 		update_TextLayerPosition(nbLineNew);
@@ -237,6 +278,7 @@ void update_watch(void) {
 		if(strcmp(new_time.line3, cur_time.line3) != 0) updateLayer(line3, 3);
 		if(strcmp(new_time.line4, cur_time.line4) != 0) updateLayer(line4, 4);
 	}
+    */
 	// vibrate at o'clock from 8 to 24
 	if(t->tm_min == 0 && t->tm_sec == 0 && t->tm_hour >= 8 && t->tm_hour <= 24 ) vibes_double_pulse();
 	if(t->tm_min == 59 && t->tm_sec == 57 && t->tm_hour >= 7 && t->tm_hour <= 23 ) vibes_short_pulse();
